@@ -1,0 +1,83 @@
+# SI413 Lab 1.1: Spec for Just Strings language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+
+# Task 1
+
+language_name: JDM
+
+
+# Task 2
+
+example_program: |
+  main:
+    [print the concatenation of two string literals]
+    p(@Hello@|@World@)
+    [read in a line from stdin to the string literal, reverse the string, then print the string] 
+    p(>*<)
+    [print the concatenation of a string literal read from stdin, a string literal, the reversal of a string literal read from stdin, and a string literal read from stdin]
+    p(*|@dogs@|>*<|*)
+
+
+
+example_input_1: |
+    BLAH BLAH
+
+example_output_1: |
+    BLAH BLAH
+
+example_input_2: |
+    BLAH BLAH
+
+example_output_2: |
+    BLAH BLAH
+
+# Task 3
+
+language_syntax: |
+
+  Expression:     A sequence of code that evaluates to a string literal
+
+  Statement:
+
+  String literal: A sequence of zero or more ASCII characters enclosed by the "@" character. The delineators are paired to the 
+                  nearest delineator to its left unless that character is already in a pair, defining a string; then, it becomes 
+                  the opening delineator and waits for a closing delineator at the end of the string literal. In order to place the 
+                  character "@" inside a string literal and not as a delineator, the character must contain a
+                  '\' character before it.
+
+  Input:         The input character "=>" is an expression that reads in a string literal and must be placed within a statement. It can be paired with any other expression.
+
+  Concatenation: The character "|" must be placed between two expressions in order to concatenate the contents of both expressions
+                 into a single string literal, ignoring the delineating characters and only concatenating the characters inside the delineators.
+                 Concatenation operates left to right, so it concatenates the first two expressions first and then moves on to any subsquent concatenations.
+                 There is no limit for subsequent concatenations of expressions.
+
+  Reversal:      The characters ">" and "<" must be placed around an expression (ex: ">dog<") to reverse the string literal or expression that evaluates to a 
+                 string literal. An expression cannot be reversed until it has been fully evaluated to a string literal.
+
+  Print:         Print is a statement that is defined by the sequence of characters "p()" where the expression is placed within the parantheses. Print statements cannot be nested inside of other print statements. 
+
+  Comments:      Comments are defined by any character that is enclosed by square brackets: "[" and "]"
+
+language_semantics: |
+    
+  Input: the character sequence "=>" reads in a line from stdin until the newline character is read, and then terminates the stream,
+         replacing the character sequence with a string literal containing the data from the line that was read in. Input has the
+         highest operating priority amongst all expressions in the language. The newline character is not included in the string literal.
+
+# Task 4
+
+reviewer_for: BLAH BLAH
+
+reviewed_by: BLAH BLAH
+
+review_passed: N
+
+reviewer_comments: 
+                                                                                                                                                               
