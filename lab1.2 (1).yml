@@ -1,0 +1,47 @@
+# SI413 Lab 1.2: Interpreter for Just Strings language
+
+your_name: BLAH BLAH
+
+your_alpha: BLAH
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+
+# Task 1
+
+language_name: BLAH
+
+
+# Task 2
+
+example_program: |
+    BLAH BLAH
+    BLAH BLAH
+
+example_input_1: |
+    BLAH BLAH
+
+example_output_1: |
+    BLAH BLAH
+
+example_input_2: |
+    BLAH BLAH
+
+example_output_2: |
+    BLAH BLAH
+
+
+# Task 4
+
+reviewer_for: BLAH BLAH
+
+reviewed_by: BLAH BLAH
+
+review_passed: N
+
+reviewer_comments: <
+    BLAH BLAH BLAH
