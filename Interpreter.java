@@ -5,23 +5,29 @@ import java.util.*;
 
 public class Interpreter 
 {
-  public static void reversal(String str)
+  public static String reverse(String str)
   {
+		if (str == null || str.isEmpty())
+			return str;
+		StringBuilder sb = new StringBuilder(str);
+		return sb.reverse().toString();
   }
 
-  public static void concatenation(String str1, String str2)
+  public static String commentParser(String line)
   {
-  }
-
-  public static String input()
-  {
-    return "";
+	String regex = "~.*?~|~.*$";
+	String lineNoComm = line.replaceAll(regex, "");
+	return lineNoComm;	
   }
 
   public static void parser(ArrayList<String> lines)
   {
     for (String line : lines)
     {
+	  line = Interpreter.commentParser(line);
+	  if (line.length() == 0)
+		continue;
+	  System.out.println(line);
       //seperate the line by print statements
       String[] statements = line.split("p");
       for (String statement : statements)
@@ -31,19 +37,42 @@ public class Interpreter
         String[] strings = statement.split("/");
         String commandString = strings[strings.length-1].strip();
         char[] commands = commandString.toCharArray();
-        ArrayList<String> literals = new ArrayList<String>();
-        for (int i = 0; i < strings.length-1; i++)
+        Stack<String> literals = new Stack<String>();
+        for (int i = 1; i < strings.length-1; i++)
         {
-          literals.add(strings[i]);
-          System.out.print(strings[i]);
+			//System.out.println(strings[i]);
+        	literals.push(strings[i]);
         }
-        //now we have a char array for iterating through commands and an
-        //ArrayList of String literals to apply the commands to 
+        //now we have a char array for iterating through commands and a
+        //Stack of String literals to apply the commands to 
         for (int j = 0; j < commands.length; j++)
         {
-          //System.out.println(commands[j]);
+			if (commands[j] == 'r')
+			{
+				String str = literals.pop();
+				str = Interpreter.reverse(str);
+				literals.push(str);
+			}
+			else if (commands[j] == 's')
+			{
+				if (commands[j+1] != 's')
+					System.exit(7);
+				j++;
+				String str1 = literals.pop();
+				String str2 = literals.pop();
+				literals.push(str2+str1);
+			}
+			else if (commands[j] == 'i')
+			{
+				Scanner sin = new Scanner(System.in);
+				literals.push(sin.next());
+			}
+			else
+			{
+				System.exit(7);
+			}
         }
-        //System.out.print(literals.get(1));
+		System.out.println(literals.pop());
       }
     } 
   }
