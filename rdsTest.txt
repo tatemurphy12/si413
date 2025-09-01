@@ -1,4 +1,5 @@
 ~Hello Sir~
-~Please fucking kill yourself
-/str1/ p i p /000 / i ss ~this is a comment~ p /CHANGE_STRING/ r p ~burga
+~This is a comment before the code
+/str1/ p i p /000 / i ss ~this is a comment inside a line~ p /CHANGE_STRING/ r p ~end of line comment
 /hot/dog/rissssp
+i/hates //ice cream/ssssssp
