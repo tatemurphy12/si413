@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Interpreter 
 {
@@ -59,6 +61,7 @@ public class Interpreter
 	  
       //seperate the line by print statements
       String[] statements = line.split("p");
+      Stack<String> stack = new Stack<String>();
       for (String statement : statements)
       {
         //System.out.println(statement);
@@ -69,47 +72,29 @@ public class Interpreter
 		//3. two expressions
 		//Because of how the split() cmd works, first element is always empty or is an input
 		//Have to account for input before any string literal. Ex: i/hates//ice cream/ssssp
-        String[] strings = statement.split("/");
-      	Stack<String> literals = new Stack<String>();
-		//for (String string : strings)
-		//{
-		//		System.out.println("String: " + string);
-		//}
-		String commandString;
-		strings[0] = strings[0].replaceAll("\\s", "");
-		if (strings[0].matches("i+"))
-		{
-			//System.out.println(strings[0]);
-			for (int i = 0; i < strings[0].length(); i++)
-			{
-				//System.out.println("loop");
-				literals.push(Interpreter.input());
-			}
-			strings[0] = "";
-		}
-		if (strings.length > 2)
-		{
-			commandString = strings[strings.length - 1].strip();
-			for (int j = 1; j < strings.length-1; j++)
-			{
-					strings[j] = Interpreter.escapeSeq(strings[j]);
-					literals.push(strings[j]);
-			}
-		}
-		else if (strings.length == 2)
-		{
-			commandString = strings[0];
-			literals.push(Interpreter.escapeSeq(strings[1]));
-		}
-		else
-			commandString = strings[0];
-		//System.out.println(commandString + "HERE");
-        char[] commands = commandString.replaceAll("\\s", "").toCharArray();
-        //now we have a char array for iterating through commands and a
-        //Stack of String literals to apply the commands to 
-        for (int j = 0; j < commands.length; j++)
-        {
+                
+          String regex = "[^/]+";
+
+          // A list to hold the matched substrings
+          List<String> results = new ArrayList<>();
+
+          // Compile the pattern and create a matcher
+          Pattern pattern = Pattern.compile(regex);
+          Matcher matcher = pattern.matcher(statement);
+
+          // Loop through all matches found in the input string
+          while (matcher.find()) 
+          {
+            // Add the matched group (the substring) to our list
+            results.add(matcher.group());
+          }
+          for (String s : results)
+            stack.push(s);
+            
+                        //System.out.println(literals.peek());
 			//System.out.println(commands[j]);
+          while (!stack.isEmpty())
+          {
 			if (commands[j] == 'r')
 			{
 				String str = literals.pop();
@@ -137,13 +122,14 @@ public class Interpreter
 				//System.out.print("HERE1");
 				System.exit(7);
 			}
+          }
         }
-		System.out.println(literals.pop());
+		//System.out.println(literals.pop());
       }
     } 
   }
 
-  public static void main(String[] args)
+public static void main(String[] args)
   {
 
     String filename = args[0];
