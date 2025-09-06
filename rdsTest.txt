@@ -1,5 +1,6 @@
 ~Hello Sir~
 ~This is a comment before the code
-/str1/ p i p /000 / i ss ~this is a comment inside a line~ p /CHANGE_STRING/ r p ~end of line comment
-/hot/dog/rissssp
-i/hates //ice cream/ssssssp
+~This is a line fully postscripted~ /I love/irssp
+~The following is a line with cmds in the middle
+i/These//commands/i/gnikrow/ri/great/ssssssssssssp
+~This line has escape characters~ /\/There's \// /no \/way/ ssp

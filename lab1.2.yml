@@ -1,0 +1,65 @@
+# SI413 Lab 1.2: Interpreter for Just Strings language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    I changed the entire structure of my program.
+    I changed it to read in each statement char by char, adding
+    literals and commands to an ArrayList, instead of
+    using a Stack. This was to solve the problem I 
+    encountered with commands showing up in the middle
+    of the expression, instead of solely at the end.
+
+
+# Task 1
+
+language_name: RDS
+
+
+# Task 2
+
+example_program: |
+~Hello Sir~
+~This is a comment before the code
+~This is a line fully postscripted~ /I love/irssp
+~The following is a line with cmds in the middle
+i/These//commands/i/gnikrow/ri/great/ssssssssssssp
+~This line has escape characters~ /\/There's \// /no \/way/ ssp 
+
+example_input_1: |
+efil 
+Hey
+are
+super
+
+example_output_1: |
+I love life
+HeyThesecommandsareworkingsupergreat
+/There's /no /way
+
+example_input_2: |
+gods 
+Hello
+are really
+amazingly
+
+example_output_2: |
+I love dogs
+HelloThesecommandsarereallyworkingamazinglygreat
+/There's /no /way
+
+# Task 4
+
+reviewer_for: BLAH BLAH
+
+reviewed_by: Peter McDermott
+
+review_passed: Y
+
+reviewer_comments: <
+    BLAH BLAH BLAH

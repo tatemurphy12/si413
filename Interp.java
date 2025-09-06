@@ -5,11 +5,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
-//This isn't going to work right now. Need to read the entire statement into a
-//stack and then pop off and apply changes
-
 public class Interp 
 {
   public static String reverse(String str)
@@ -30,7 +25,7 @@ public class Interp
   public static String input()
   {
 		Scanner sin = new Scanner(System.in);
-		return Interp.escapeSeq(sin.nextLine());
+		return "/" + Interp.escapeSeq(sin.nextLine()) + "/";
   }
 
   public static String escapeSeq(String str)
@@ -54,6 +49,85 @@ public class Interp
 		  return str2.toString();
   }
 
+  public static boolean isString(String s)
+  {
+	  return s.startsWith("/") && s.endsWith("/");
+  }
+
+  public static ArrayList<String> makeList(String statement)
+  {
+	  ArrayList<String> list = new ArrayList<String>();
+	  char[] chars = statement.toCharArray();
+	  StringBuilder sb = new StringBuilder();
+	  boolean literal = false;
+	  for (int i = 0; i < chars.length; i++)
+	  {
+		  //System.out.println(i);
+		  if (chars[i] == ' ')
+		  {
+			  if (!literal)
+			  	continue;
+			  else
+				  sb.append(chars[i]);
+		  }
+		  else if (chars[i] == '\\')
+		  {
+			  if (literal)
+			  {
+				  sb.append(chars[i+1]);
+				  i++;
+			  }
+			  else
+			  {
+				System.out.println("bad 87");
+				System.exit(7);
+			  }
+		  }	
+		  else if (chars[i] == '/')
+		  {
+			  if (literal)
+			  {
+				  literal = false;
+				  sb.append(chars[i]);
+				  list.add(sb.toString());
+				  sb.setLength(0);
+			  }
+			  else
+			  {
+				  literal = true;
+				  sb.append(chars[i]);
+			  }
+		  }
+		  else
+		  {
+			  if (literal)
+			  {
+				  sb.append(chars[i]);
+			  }
+			  else
+			  {
+				  if (chars[i] == 'i' || chars[i] == 'r')
+				  {
+					  list.add(String.valueOf(chars[i]));
+				  }
+				  else if (chars[i] == 's' && chars[i+1] == 's')
+				  {
+					  list.add("ss");
+					  i++;
+				  }
+				  else
+				  {
+					  System.out.println("bad 124");
+					  System.exit(7);
+				  }
+					  
+			  }
+		  }
+		  
+	  }
+	  return list;
+  }
+
   public static void parser(ArrayList<String> lines)
   {
     for (String line : lines)
@@ -61,113 +135,58 @@ public class Interp
 	  line = Interp.commentParser(line).strip();
 	  if (line.length() == 0)
 		continue;
-	  //line = line.replaceAll("\\s", "");
-	  //System.out.println(line);
 	  
+	  //System.out.println(line);
       //seperate the line by print statements
       String[] statements = line.split("p");
       for (String statement : statements)
       {
-        //System.out.println(statement);
-        //separate the statements into literals and commands
-		//There are three main cases:
-		//1. only an input command
-		//2. one expression
-		//3. two expressions
-		//Because of how the split() cmd works, first element is always empty or is an input
-		//Have to account for input before any string literal. Ex: i/hates//ice cream/ssssp
-        String[] strings = statement.split("/");
-      	Stack<String> literals = new Stack<String>();
-        String commandString;
-	strings[0] = strings[0].replaceAll("\\s", "");
-	if (strings[0].matches("i+"))
-	{
-		//System.out.println(strings[0]);
-		for (int i = 0; i < strings[0].length(); i++)
+		//System.out.println(statement);
+    	ArrayList<String> list = Interp.makeList(statement);
+		//for (String l : list)
+		//	System.out.println(l);
+		for (int i = 0; i < list.size(); i++)
 		{
-			//System.out.println("loop");
-			literals.push(Interp.input());
-		}
-	        strings[0] = "";
-	}
-	if (strings.length > 2)
-	{
-		commandString = strings[strings.length - 1].strip();
-		for (int j = 1; j < strings.length-1; j++)
-		{
-			strings[j] = Interp.escapeSeq(strings[j]);
-			literals.push(strings[j]);
-		}
-	}
-	else if (strings.length == 2)
-	{
-		commandString = strings[0];
-		literals.push(Interp.escapeSeq(strings[1]));
-	}
-	else
-	      commandString = strings[0];
-      
-        //filter stack for empty strings resulting from two strings put together
-        if (literals.size() > 2)
-        {
-            Stack<String> tempStack = new Stack<>();
-            while (!literals.isEmpty()) 
-            {
-              String element = literals.pop();
-              // Check if the element is not null and not an empty string
-              if (element != null && !element.isEmpty()) 
-              {
-                tempStack.push(element);
-              }
-            } 
-
-            // Transfer the filtered elements back to the original stack
-            while (!tempStack.isEmpty()) 
-            {
-              literals.push(tempStack.pop());
-            }
-
-        }
-
-	//System.out.println(commandString + "HERE");
-        char[] commands = commandString.replaceAll("\\s", "").toCharArray();
-        //now we have a char array for iterating through commands and a
-        //Stack of String literals to apply the commands to 
-        for (int j = 0; j < commands.length; j++)
-        {
-                        //System.out.println(literals.peek());
-			//System.out.println(commands[j]);
-			if (commands[j] == 'r')
+			//System.out.println("String" + list.get(i));
+			if(Interp.isString(list.get(i)))
 			{
-				String str = literals.pop();
-				str = Interp.reverse(str);
-				literals.push(str);
+				continue;
 			}
-			else if (commands[j] == 's')
+			else if (list.get(i).equals("i"))
 			{
-				if (commands[j+1] != 's')
+				list.set(i, Interp.escapeSeq(Interp.input()));
+			}
+			else if (list.get(i).equals("ss"))
+			{
+				if (i < 2)
 				{
-					//System.out.print("HERE2");
+					System.out.println("bad 165");
 					System.exit(7);
 				}
-				j++;
-				String str1 = literals.pop();
-				String str2 = literals.pop();
-				literals.push(str2+str1);
+				else
+				{
+					list.set(i, list.get(i-2).replaceAll("/$", "") + list.get(i-1).replaceAll("^/|/$", ""));
+					list.remove(i-1);
+					list.remove(i-2);
+					i = i - 2;
+				}
 			}
-			else if (commands[j] == 'i')
+			else if (list.get(i).equals("r"))
 			{
-					literals.push(Interp.input());
+				String reversed = Interp.reverse(list.get(i-1));
+				list.set(i-1, reversed);
+				list.remove(i);
+				i--;
 			}
 			else
 			{
-				//System.out.print("HERE1");
+				System.out.println("bad 182");
 				System.exit(7);
 			}
-        }
-		System.out.println(literals.pop());
+		}
+		System.out.println(list.get(0).replaceAll("^/|/$", ""));
       }
-    } 
+    }
   }
 
 public static void main(String[] args)
