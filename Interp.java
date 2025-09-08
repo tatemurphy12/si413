@@ -79,7 +79,7 @@ public class Interp
 			  }
 			  else
 			  {
-				System.out.println("bad 87");
+				//System.out.println("bad 87");
 				System.exit(7);
 			  }
 		  }	
@@ -117,7 +117,7 @@ public class Interp
 				  }
 				  else
 				  {
-					  System.out.println("bad 124");
+					  //System.out.println("bad 124");
 					  System.exit(7);
 				  }
 					  
@@ -160,7 +160,7 @@ public class Interp
 			{
 				if (i < 2)
 				{
-					System.out.println("bad 165");
+					//System.out.println("bad 165");
 					System.exit(7);
 				}
 				else
@@ -180,7 +180,7 @@ public class Interp
 			}
 			else
 			{
-				System.out.println("bad 182");
+				//System.out.println("bad 182");
 				System.exit(7);
 			}
 		}
@@ -205,8 +205,8 @@ public static void main(String[] args)
                 //System.out.println(line);
             }
         } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return;
+            //System.out.println("Error reading file: " + e.getMessage());
+            System.exit(7);
         }
     Interp.parser(lines);
   }
