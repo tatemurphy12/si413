@@ -1,0 +1,83 @@
+# SI413 Lab 2.1: Spec for StringBoolVar Language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# describe any collaboration or help you got from classmates
+collaboration: |
+    NONE
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+#### TASK 1 ####
+
+language_name: Bocephus
+
+
+#### TASK 2 ####
+
+example_program: |
+    BLAH BLAH
+    BLAH BLAH
+
+example_input_1: |
+    BLAH BLAH
+
+example_output_1: |
+    BLAH BLAH
+
+example_input_2: |
+    BLAH BLAH
+
+example_output_2: |
+    BLAH BLAH
+
+
+#### TASK 3 ####
+
+# there are just two example tokens below; you should remove or modify them!!
+tokens: |
+    Token name    Regex
+    ----------    -----
+    ASSIGN        
+    PRINT
+    CONCAT
+    REV
+    IN
+    CON
+    LT
+    AND
+    OR
+    NOT
+    BOOL
+    STR           
+
+#### TASK 4 ####
+
+# remove or replace the example production rule with your own!
+grammar: |
+    program -> YOUR TOKENS and nonterminals HERE
+
+
+#### TASK 5 ####
+
+semantics: |
+    BLAH BLAH
+    BLAH BLAH
+
+
+#### TASK 6 ####
+
+reviewer_for: BLAH BLAH
+
+reviewed_by: BLAH BLAH
+
+review_passed: N
+
+reviewer_comments: |
+    BLAH BLAH BLAH
