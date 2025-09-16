@@ -9,43 +9,23 @@ public class Compiler
 
   public static void preamble(PrintWriter p)
   {
-	  p.println("target triple = \"x86_64-pc-linux-gnu\"\n");
-	  p.println("%struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, %struct._IO_codecvt*, %struct._IO_wide_data*, %struct._IO_FILE*, i8*, i64, i32, [20 x i8] }\n"+
-			"%struct._IO_marker = type opaque\n"+
-			"%struct._IO_codecvt = type opaque\n"+
-			"%struct._IO_wide_data = type opaque\n"+
-			"@stdin = external global %struct._IO_FILE*, align 8\n"+
-			"@.str = private unnamed_addr constant [2 x i8] c\"\\0A\\00\", align 1");
-
-	  p.println("define dso_local i8* @input(i8* noundef %0, i32 noundef %1) #0 {\n" + "\t%3 = alloca i8*, align 8\n"+
-  			"\t%4 = alloca i8*, align 8\n"+
-  			"\t%5 = alloca i32, align 4\n"+
-  			"\tstore i8* %0, i8** %4, align 8\n"+
-  			"\tstore i32 %1, i32* %5, align 4\n"+
-  			"\t%6 = load i8*, i8** %4, align 8\n"+
-  			"\t%7 = load i32, i32* %5, align 4\n"+
-  			"\t%8 = load %struct._IO_FILE*, %struct._IO_FILE** @stdin, align 8\n"+
-  			"\t%9 = call i8* @fgets(i8* noundef %6, i32 noundef %7, %struct._IO_FILE* noundef %8)\n"+
-  			"\t%10 = icmp eq i8* %9, null\n"+
-  			"\tbr i1 %10, label %11, label %12\n"+
-
-			"\t11:                                               ; preds = %2\n"+
-  				"\t\tstore i8* null, i8** %3, align 8\n"+
-  				"\t\tbr label %18\n"+
-			"\t12:                                               ; preds = %2\n"+
-  				"\t\t%13 = load i8*, i8** %4, align 8\n"+
-  				"\t\t%14 = load i8*, i8** %4, align 8\n"+
-  				"\t\t%15 = call i64 @strcspn(i8* noundef %14, i8* noundef getelementptr inbounds ([2 x i8], [2 x i8]* @.str, i64 0, i64 0)) #4\n"+
-  				"\t\t%16 = getelementptr inbounds i8, i8* %13, i64 %15\n"+
-  				"\t\tstore i8 0, i8* %16, align 1\n"+
-  				"\t\t%17 = load i8*, i8** %4, align 8\n"+
-  				"\t\tstore i8* %17, i8** %3, align 8\n"+
-  				"\t\tbr label %18\n"+
-			"\t18:                                               ; preds = %12, %11\n"+
-  				"\t\t%19 = load i8*, i8** %3, align 8\n"+
-  				"\t\tret i8* %19\n"+
-				"}\n");
-
+	  ArrayList<String> lines = new ArrayList<>();
+          String filePath = "helpers.ll"; // Make sure this file exists in the same directory as your program
+          File file = new File(filePath);
+          try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+              lines.add(scanner.nextLine());
+            }
+            scanner.close(); // It's good practice to close the scanner when you're done
+          } 
+          catch (FileNotFoundException e) {
+              System.out.println("File not found: " + e.getMessage());
+          }
+          for (String line : lines)
+          {
+            p.println(line);
+          }
 	  //ask sir abt the unspecified pointer error
 	  p.println("declare i32 @puts(i32 noundef) #1\n");
 	  p.println("define i32 @main() {");
@@ -146,7 +126,7 @@ public class Compiler
 			  }
 			  else
 			  {
-				  if (chars[i] == 'i' || chars[i] == 'r')
+				  if (chars[i] == 'i' || chars[i] == 'r' || chars[i] == 'p')
 				  {
 					  list.add(String.valueOf(chars[i]));
 				  }
@@ -168,13 +148,12 @@ public class Compiler
 	  return list;
   }
 
-  public static void printString(PrintWriter p, String str)
+  public static void printString(PrintWriter p, String strPtr)
   {
-	Compiler.literals.add(str.replaceAll("^/|/$", ""));
-	p.println("\tcall i32 @puts(ptr @lit" + Integer.toString(Compiler.literals.size() -1) + ")");
+	p.println("\tcall i32 @puts(i8* noundef %" + strPtr+ ")");
   }
 
-  public static void parser(ArrayList<String> lines, PrintWriter writer)
+  public static void parser(ArrayList<String> lines, PrintWriter p)
   {
     for (String line : lines)
     {
@@ -184,26 +163,29 @@ public class Compiler
 	  
 	  //System.out.println(line);
       //seperate the line by print statements
-      String[] statements = line.split("p");
-      for (String statement : statements)
-      {
+      int localNum = 0;
+      int concatCounter = 0;
 		//System.out.println(statement);
-	ArrayList<String> literals = new ArrayList<String>();
-    	ArrayList<String> list = Compiler.makeList(statement);
+      ArrayList<String> literals = new ArrayList<String>();
+      ArrayList<String> list = Compiler.makeList(line);
 		//for (String l : list)
 		//	System.out.println(l);
-		for (int i = 0; i < list.size(); i++)
-		{
+      for (int i = 0; i < list.size(); i++)
+      {
 			//System.out.println("String" + list.get(i));
 			if(Compiler.isString(list.get(i)))
 			{
-				continue;
+                              Compiler.literals.add(list.get(i).replaceAll("^/|/$", ""));
+                              int size = list.get(i).length()+1;
+                              p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds ["+ size + " x i8], [" + size+ " x i8]* @lit" + (Compiler.literals.size() - 1) + ", i64 0, i64 0");
+                              localNum++;
 			}
 			else if (list.get(i).equals("i"))
 			{
-				//list.set(i, Interp.escapeSeq(Interp.input(sin)));
-				//;
-
+                            p.println("\t%str" + Integer.toString(localNum) + " = alloca [256 x i8], align 16");
+                            p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds [256 x i8], [256 x i8]* %str" + Integer.toString(localNum) + ", i64 0, i64 0");
+                            p.println("\tcall i8* @input(i8* noundef %strPtr" + Integer.toString(localNum)+ ", i32 noundef 256)");
+                            localNum++;
 			}
 			else if (list.get(i).equals("ss"))
 			{
@@ -214,27 +196,27 @@ public class Compiler
 				}
 				else
 				{
-					list.set(i, list.get(i-2).replaceAll("/$", "") + list.get(i-1).replaceAll("^/|/$", ""));
-					list.remove(i-1);
-					list.remove(i-2);
-					i = i - 2;
+                                    int secVal = localNum - (2 + 2*concatCounter);
+                                    p.println("\t%strPtr" + Integer.toString(localNum)+ " = call i8* @concatenate(i8* noundef %strPtr" + Integer.toString()+ ", i8* noundef %strPtr" + Integer.toString()+")");
+                                    concatCounter++;
+                                    localNum++;
 				}
 
 			}
 			else if (list.get(i).equals("r"))
 			{
-				String reversed = Interp.reverse(list.get(i-1));
-				list.set(i-1, reversed);
-				list.remove(i);
-				i--;
+                          ;
 			}
+                        else if (list.get(i).equals("p"))
+                        {
+                            Compiler.printString(p, "strPtr" + Integer.toString(localNum-1));
+                            concatCounter = 0;
+                        }
 			else
 			{
-				System.exit(7);
+			    System.exit(7);
 			}
 		}
-		Compiler.printString(writer, list.get(0));
-      }
     }
   }
 
