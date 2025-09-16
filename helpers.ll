@@ -44,7 +44,7 @@ define dso_local i8* @input(i8* noundef %0, i32 noundef %1) #0 {
   ret i8* %19
 }
 
-declare i8* @fgets(i8* noundef, i32 noundef, %struct._IO_FILE* noundef) #1
+declare i8* @fgets(i8* noundef, i32 noundef, %struct._IO_FILE* noundef) #1   ;put in your compiler code
 
 ; Function Attrs: nounwind readonly willreturn
 declare i64 @strcspn(i8* noundef, i8* noundef) #2
