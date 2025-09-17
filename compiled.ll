@@ -49,74 +49,48 @@ declare i8* @fgets(i8* noundef, i32 noundef, %struct._IO_FILE* noundef) #1   ;pu
 ; Function Attrs: nounwind readonly willreturn
 declare i64 @strcspn(i8* noundef, i8* noundef) #2
 
-; Function Attrs: noinline nounwind optnone uwtable
-define dso_local i8* @reverse(i8* noundef %0) #0 {
-  %2 = alloca i8*, align 8
-  %3 = alloca i8*, align 8
-  %4 = alloca i8*, align 8
-  %5 = alloca i8*, align 8
-  %6 = alloca i8, align 1
-  store i8* %0, i8** %3, align 8
-  %7 = load i8*, i8** %3, align 8
-  %8 = icmp eq i8* %7, null
-  br i1 %8, label %14, label %9
+; i8* @reverse(i8* %input)
+define i8* @reverse(i8* noundef %input) {
+entry:
+  ; compute length of input
+  %len = call i64 @strlen(i8* noundef %input)
 
-9:                                                ; preds = %1
-  %10 = load i8*, i8** %3, align 8
-  %11 = load i8, i8* %10, align 1
-  %12 = sext i8 %11 to i32
-  %13 = icmp eq i32 %12, 0
-  br i1 %13, label %14, label %16
+  ; allocate output buffer: len + 1 (for '\0')
+  %size = add i64 %len, 1
+  %out = call i8* @malloc(i64 %size)
 
-14:                                               ; preds = %9, %1
-  %15 = load i8*, i8** %3, align 8
-  store i8* %15, i8** %2, align 8
-  br label %41
+  ; initialize loop vars
+  %i = alloca i64, align 8
+  store i64 0, i64* %i
+  br label %loop
 
-16:                                               ; preds = %9
-  %17 = load i8*, i8** %3, align 8
-  store i8* %17, i8** %4, align 8
-  %18 = load i8*, i8** %3, align 8
-  %19 = load i8*, i8** %3, align 8
-  %20 = call i64 @strlen(i8* noundef %19) #4
-  %21 = getelementptr inbounds i8, i8* %18, i64 %20
-  %22 = getelementptr inbounds i8, i8* %21, i64 -1
-  store i8* %22, i8** %5, align 8
-  br label %23
+loop:                                             ; preds = %loop, %entry
+  %iv = load i64, i64* %i
+  %cmp = icmp slt i64 %iv, %len
+  br i1 %cmp, label %body, label %done
 
-23:                                               ; preds = %27, %16
-  %24 = load i8*, i8** %5, align 8
-  %25 = load i8*, i8** %4, align 8
-  %26 = icmp ugt i8* %24, %25
-  br i1 %26, label %27, label %39
+body:                                             ; preds = %loop
+  ; source index = len - 1 - i
+  %sub = sub i64 %len, 1
+  %srcIndex = sub i64 %sub, %iv
+  %srcPtr = getelementptr inbounds i8, i8* %input, i64 %srcIndex
+  %ch = load i8, i8* %srcPtr
 
-27:                                               ; preds = %23
-  %28 = load i8*, i8** %4, align 8
-  %29 = load i8, i8* %28, align 1
-  store i8 %29, i8* %6, align 1
-  %30 = load i8*, i8** %5, align 8
-  %31 = load i8, i8* %30, align 1
-  %32 = load i8*, i8** %4, align 8
-  store i8 %31, i8* %32, align 1
-  %33 = load i8, i8* %6, align 1
-  %34 = load i8*, i8** %5, align 8
-  store i8 %33, i8* %34, align 1
-  %35 = load i8*, i8** %4, align 8
-  %36 = getelementptr inbounds i8, i8* %35, i32 1
-  store i8* %36, i8** %4, align 8
-  %37 = load i8*, i8** %5, align 8
-  %38 = getelementptr inbounds i8, i8* %37, i32 -1
-  store i8* %38, i8** %5, align 8
-  br label %23, !llvm.loop !6
+  ; dest index = i
+  %dstPtr = getelementptr inbounds i8, i8* %out, i64 %iv
+  store i8 %ch, i8* %dstPtr
 
-39:                                               ; preds = %23
-  %40 = load i8*, i8** %3, align 8
-  store i8* %40, i8** %2, align 8
-  br label %41
+  ; increment i
+  %inc = add i64 %iv, 1
+  store i64 %inc, i64* %i
+  br label %loop
 
-41:                                               ; preds = %39, %14
-  %42 = load i8*, i8** %2, align 8
-  ret i8* %42
+done:                                             ; preds = %loop
+  ; null terminate
+  %nullPtr = getelementptr inbounds i8, i8* %out, i64 %len
+  store i8 0, i8* %nullPtr
+
+  ret i8* %out
 }
 
 ; Function Attrs: nounwind readonly willreturn
@@ -198,22 +172,38 @@ attributes #5 = { nounwind }
 !5 = !{!"Ubuntu clang version 14.0.0-1ubuntu1.1"}
 !6 = distinct !{!6, !7}
 !7 = !{!"llvm.loop.mustprogress"}
-declare i32 @puts(i32 noundef) #1
+declare i32 @puts(i8* noundef) #1
 
 define i32 @main() {
-	%strPtr0 = getelementptr inbounds [8 x i8], [8 x i8]* @lit0, i64 0, i64 0
-	%strPtr1 = getelementptr inbounds [10 x i8], [10 x i8]* @lit1, i64 0, i64 0
-	%strPtr2 = getelementptr inbounds [10 x i8], [10 x i8]* @lit2, i64 0, i64 0
-	%strPtr3 = call i8* @concatenate(i8* noundef %strPtr1, i8* noundef %strPtr2)
-	%strPtr4 = call i8* @concatenate(i8* noundef %strPtr0, i8* noundef %strPtr3)
+	%strPtr0 = getelementptr inbounds [7 x i8], [7 x i8]* @lit0, i64 0, i64 0
+	call i32 @puts(i8* noundef %strPtr0)
+	%str1 = alloca [256 x i8], align 16
+	%strPtr1 = getelementptr inbounds [256 x i8], [256 x i8]* %str1, i64 0, i64 0
+	call i8* @input(i8* noundef %strPtr1, i32 noundef 256)
+	call i32 @puts(i8* noundef %strPtr1)
+	%strPtr2 = getelementptr inbounds [7 x i8], [7 x i8]* @lit1, i64 0, i64 0
+	%str3 = alloca [256 x i8], align 16
+	%strPtr3 = getelementptr inbounds [256 x i8], [256 x i8]* %str3, i64 0, i64 0
+	call i8* @input(i8* noundef %strPtr3, i32 noundef 256)
+	%strPtr4 = call i8* @concatenate(i8* noundef %strPtr2, i8* noundef %strPtr3)
 	call i32 @puts(i8* noundef %strPtr4)
-	%str5 = alloca [256 x i8], align 16
-	%strPtr5 = getelementptr inbounds [256 x i8], [256 x i8]* %str5, i64 0, i64 0
-	call i8* @input(i8* noundef %strPtr5, i32 noundef 256)
-	call i32 @puts(i8* noundef %strPtr5)
+	%strPtr5 = getelementptr inbounds [16 x i8], [16 x i8]* @lit2, i64 0, i64 0
+	%strPtr6 = call i8* @reverse(i8* noundef %strPtr5)
+	call i32 @puts(i8* noundef %strPtr6)
+	%strPtr7 = getelementptr inbounds [6 x i8], [6 x i8]* @lit3, i64 0, i64 0
+	%strPtr8 = getelementptr inbounds [6 x i8], [6 x i8]* @lit4, i64 0, i64 0
+	%strPtr9 = call i8* @reverse(i8* noundef %strPtr8)
+	%str10 = alloca [256 x i8], align 16
+	%strPtr10 = getelementptr inbounds [256 x i8], [256 x i8]* %str10, i64 0, i64 0
+	call i8* @input(i8* noundef %strPtr10, i32 noundef 256)
+	%strPtr11 = call i8* @concatenate(i8* noundef %strPtr9, i8* noundef %strPtr10)
+	%strPtr12 = call i8* @concatenate(i8* noundef %strPtr7, i8* noundef %strPtr11)
+	call i32 @puts(i8* noundef %strPtr12)
 	ret i32 0
 }
 
-@lit0= constant [6 x i8] c"aloha\00"
-@lit1= constant [8 x i8] c"aloha 2\00"
-@lit2= constant [8 x i8] c"aloha 3\00"
+@lit0= constant [5 x i8] c"str1\00"
+@lit1= constant [5 x i8] c"OOO \00"
+@lit2= constant [14 x i8] c"CHANGE_STRING\00"
+@lit3= constant [4 x i8] c"hot\00"
+@lit4= constant [4 x i8] c"dog\00"

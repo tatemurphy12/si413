@@ -6,7 +6,7 @@ your_alpha: 264542
 
 used_ai: Y # remember to turn in an aichat.md file as well
 
-language_name: BLAH
+language_name: RDS
 
 # describe any collaboration or help you got from classmates
 collaboration: |
@@ -14,4 +14,4 @@ collaboration: |
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
-    NONE
+    I finished all my helper functions and changed the way I read them in. I realized that it would be smarter to scan in the functions from the file directly rather than hard-coding them in. I figured out a way to keep track of my string declarations using a counter and an ArrayList of unique Strings to deal with reverses and concatenations. I then had to edit my reverse helper function because it reversed the string in place intstead of creating a new local buffer. This created a segfault when I would try to reverse globally declared Strings.

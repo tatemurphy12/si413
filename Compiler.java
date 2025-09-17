@@ -27,7 +27,7 @@ public class Compiler
             p.println(line);
           }
 	  //ask sir abt the unspecified pointer error
-	  p.println("declare i32 @puts(i32 noundef) #1\n");
+	  p.println("declare i32 @puts(i8* noundef) #1\n");
 	  p.println("define i32 @main() {");
   }
 
@@ -155,6 +155,7 @@ public class Compiler
 
   public static void parser(ArrayList<String> lines, PrintWriter p)
   {
+	int localNum = 0;
     for (String line : lines)
     {
 	  line = Compiler.commentParser(line).strip();
@@ -163,11 +164,10 @@ public class Compiler
 	  
 	  //System.out.println(line);
       //seperate the line by print statements
-      int localNum = 0;
-      int concatCounter = 0;
-		//System.out.println(statement);
-      ArrayList<String> literals = new ArrayList<String>();
+      		//System.out.println(statement);
+      //ArrayList<String> literals = new ArrayList<String>();
       ArrayList<String> list = Compiler.makeList(line);
+      ArrayList<String> uniqueStrings = new ArrayList<String>();
 		//for (String l : list)
 		//	System.out.println(l);
       for (int i = 0; i < list.size(); i++)
@@ -175,17 +175,19 @@ public class Compiler
 			//System.out.println("String" + list.get(i));
 			if(Compiler.isString(list.get(i)))
 			{
-                              Compiler.literals.add(list.get(i).replaceAll("^/|/$", ""));
-                              int size = list.get(i).length()+1;
-                              p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds ["+ size + " x i8], [" + size+ " x i8]* @lit" + (Compiler.literals.size() - 1) + ", i64 0, i64 0");
-                              localNum++;
+                Compiler.literals.add(list.get(i).replaceAll("^/|/$", ""));
+                int size = list.get(i).length()+1;
+                p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds ["+ size + " x i8], [" + size+ " x i8]* @lit" + (Compiler.literals.size() - 1) + ", i64 0, i64 0");
+			    uniqueStrings.add("%strPtr" + Integer.toString(localNum));
+                localNum++;
 			}
 			else if (list.get(i).equals("i"))
 			{
-                            p.println("\t%str" + Integer.toString(localNum) + " = alloca [256 x i8], align 16");
-                            p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds [256 x i8], [256 x i8]* %str" + Integer.toString(localNum) + ", i64 0, i64 0");
-                            p.println("\tcall i8* @input(i8* noundef %strPtr" + Integer.toString(localNum)+ ", i32 noundef 256)");
-                            localNum++;
+            	p.println("\t%str" + Integer.toString(localNum) + " = alloca [256 x i8], align 16");
+                p.println("\t%strPtr" + Integer.toString(localNum) + " = getelementptr inbounds [256 x i8], [256 x i8]* %str" + Integer.toString(localNum) + ", i64 0, i64 0");
+                p.println("\tcall i8* @input(i8* noundef %strPtr" + Integer.toString(localNum)+ ", i32 noundef 256)");
+			   	uniqueStrings.add("%strPtr" + Integer.toString(localNum));
+                localNum++;
 			}
 			else if (list.get(i).equals("ss"))
 			{
@@ -196,22 +198,28 @@ public class Compiler
 				}
 				else
 				{
-                                    int secVal = localNum - (2 + 2*concatCounter);
-                                    p.println("\t%strPtr" + Integer.toString(localNum)+ " = call i8* @concatenate(i8* noundef %strPtr" + Integer.toString()+ ", i8* noundef %strPtr" + Integer.toString()+")");
-                                    concatCounter++;
-                                    localNum++;
+					int size = uniqueStrings.size();
+					String str1 = uniqueStrings.get(size-1);
+					String str2 = uniqueStrings.get(size-2);
+                    p.println("\t%strPtr" + Integer.toString(localNum) + " = call i8* @concatenate(i8* noundef " + str2 + ", i8* noundef " + str1 +")");
+					uniqueStrings.add("%strPtr" + Integer.toString(localNum));
+					uniqueStrings.remove(str1);
+					uniqueStrings.remove(str2);
+                    localNum++;
 				}
 
 			}
 			else if (list.get(i).equals("r"))
 			{
-                          ;
+            	p.println("\t%strPtr" + Integer.toString(localNum) + " = call i8* @reverse(i8* noundef "+ uniqueStrings.get(uniqueStrings.size()-1) +")");
+				uniqueStrings.remove(uniqueStrings.size()-1);
+				uniqueStrings.add("%strPtr" + Integer.toString(localNum));
+				localNum++;
 			}
-                        else if (list.get(i).equals("p"))
-                        {
-                            Compiler.printString(p, "strPtr" + Integer.toString(localNum-1));
-                            concatCounter = 0;
-                        }
+            else if (list.get(i).equals("p"))
+            {
+            	Compiler.printString(p, "strPtr" + Integer.toString(localNum-1));
+            }
 			else
 			{
 			    System.exit(7);
