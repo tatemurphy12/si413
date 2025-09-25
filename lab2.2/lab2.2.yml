@@ -1,0 +1,16 @@
+# SI413 Lab 1.2: Interpreter for Just Strings language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: N # remember to turn in an aichat.md file as well
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+language_name: Arrr!
+
+any_other_comments_for_me: |
+    Have not used AI yet. Interpreter compiles but does not visit any nodes yet because I have to figure out how to do that.

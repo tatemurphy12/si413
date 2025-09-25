@@ -1,0 +1,11 @@
+# tokens for basic calculator language
+PRINT: print
+SAVE: save
+X: x
+LP: \(
+RP: \)
+ADDOP: [-+]
+MULOP: [*/]
+INT: [0-9]+
+ignore: #.*
+ignore: [ \t\n]
