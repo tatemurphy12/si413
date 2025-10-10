@@ -1,0 +1,21 @@
+# SI413 Lab 2.3: Compiler for StringBoolVar language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: N # remember to turn in an aichat.md file as well
+
+language_name: Arrr!
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+# describe any collaboration or help you got from classmates
+collaboration: |
+    NONE
+
+# something else your instructor should know?
+any_other_comments_for_me: |
+    Have wrote helper functions and set up node visitation. Am looking at my other compiler to refresh how global vs local declaration work. Have not used AI yet, just searched for the c std library documentation.
