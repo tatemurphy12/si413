@@ -277,3 +277,69 @@ attributes #5 = { nounwind }
 !5 = !{!"Ubuntu clang version 14.0.0-1ubuntu1.1"}
 !6 = distinct !{!6, !7}
 !7 = !{!"llvm.loop.mustprogress"}
+define i32 @main() {
+%strPtr0 = getelementptr inbounds [10 x i8], [10 x i8]* @lit0, i64 0, i64 0
+%strPtr1 = getelementptr inbounds [38 x i8], [38 x i8]* @lit1, i64 0, i64 0
+call i32 @puts(i8* noundef %strPtr1)
+%str2 = alloca [256 x i8], align 16
+%strPtr2 = getelementptr inbounds [256 x i8], [256 x i8]* %str2, i64 0, i64 0
+call i8* @input(i8* noundef %strPtr2, i32 noundef 256)
+%strPtr3 = call i8* @reverse(i8* noundef %strPtr2)
+%comRes0 = call i32 @string_compare(%strPtr3, %strPtr0)
+%boolPtr1 = alloca i1, align 1
+%boolPtr1LD = icmp eq i32 %comRes0, 0
+store i1 %boolPtr1LD, ptr %boolPtr1, align 1
+call void @print_aye_or_nay(ptr %boolPtr1)
+%strPtr4 = getelementptr inbounds [31 x i8], [31 x i8]* @lit2, i64 0, i64 0
+call i32 @puts(i8* noundef %strPtr4)
+%str5 = alloca [256 x i8], align 16
+%strPtr5 = getelementptr inbounds [256 x i8], [256 x i8]* %str5, i64 0, i64 0
+call i8* @input(i8* noundef %strPtr5, i32 noundef 256)
+%strPtr6 = getelementptr inbounds [5 x i8], [5 x i8]* @lit3, i64 0, i64 0
+%conRes2 = call i32 @string_contains(%strPtr5, %strPtr6)
+%boolPtr2  = alloca i1, align 1
+%boolPtr2LD = icmp ne i32 %conRes2, 0
+store i1 %boolPtr2LD, ptr %boolPtr2, align 1
+%strPtr7 = getelementptr inbounds [12 x i8], [12 x i8]* @lit4, i64 0, i64 0
+%comRes3 = call i32 @string_compare(%strPtr7, %strPtr5)
+%boolPtr4 = alloca i1, align 1
+%boolPtr4LD = icmp slt i32 %comRes3, 0
+store i1 %boolPtr4LD, ptr %boolPtr4, align 1
+%boolPtr25LD= load i1, ptr %boolPtr2, align 1
+%boolPtr45LD= load i1, ptr %boolPtr4, align 1
+%boolPtr5= alloca i1, align 1
+%boolPtr5LD = and i1 %boolPtr25LD, %boolPtr45LD
+store i1 %boolPtr5LD, ptr %boolPtr5, align 1
+call void @print_aye_or_nay(ptr %boolPtr5)
+%strPtr8 = getelementptr inbounds [25 x i8], [25 x i8]* @lit5, i64 0, i64 0
+call i32 @puts(i8* noundef %strPtr8)
+%str9 = alloca [256 x i8], align 16
+%strPtr9 = getelementptr inbounds [256 x i8], [256 x i8]* %str9, i64 0, i64 0
+call i8* @input(i8* noundef %strPtr9, i32 noundef 256)
+%strPtr10 = getelementptr inbounds [24 x i8], [24 x i8]* @lit6, i64 0, i64 0
+call i32 @puts(i8* noundef %strPtr10)
+%str11 = alloca [256 x i8], align 16
+%strPtr11 = getelementptr inbounds [256 x i8], [256 x i8]* %str11, i64 0, i64 0
+call i8* @input(i8* noundef %strPtr11, i32 noundef 256)
+%strPtr12 = call i8* @concatenate(i8* noundef %strPtr9, i8* noundef %strPtr11)
+call i32 @puts(i8* noundef %strPtr12)
+%strPtr13 = getelementptr inbounds [2 x i8], [2 x i8]* @lit7, i64 0, i64 0
+%conRes6 = call i32 @string_contains(%strPtr12, %strPtr13)
+%boolPtr6  = alloca i1, align 1
+%boolPtr6LD = icmp ne i32 %conRes6, 0
+store i1 %boolPtr6LD, ptr %boolPtr6, align 1
+call void @print_aye_or_nay(ptr %boolPtr6)
+%strPtr14 = getelementptr inbounds [20 x i8], [20 x i8]* @lit8, i64 0, i64 0
+call i32 @puts(i8* noundef %strPtr14)
+  ret i32 0
+}
+
+@lit0= constant [10 x i8] c"backwards\00"
+@lit1= constant [38 x i8] c"Enter the password or walk the plank!\00"
+@lit2= constant [31 x i8] c"Where is the treasure located?\00"
+@lit3= constant [5 x i8] c"tree\00"
+@lit4= constant [12 x i8] c"Port Royale\00"
+@lit5= constant [25 x i8] c"What is your first name?\00"
+@lit6= constant [24 x i8] c"What is your last name?\00"
+@lit7= constant [2 x i8] c"X\00"
+@lit8= constant [20 x i8] c"~~~~~~~~~~~~~~~~~~~\00"

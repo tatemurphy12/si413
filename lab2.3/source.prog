@@ -1,0 +1,35 @@
+!Blimey! Stash the true password ye land lubber! Scallywag!
+    Stash Booty correctPass ~~backwards~~
+
+    !Blimey! Get the secret input from the user. They should type in "sdrawkcab" Scallywag!
+    Avast Booty ~~Enter the password or walk the plank!~~
+    Stash Booty userInput Savvy?
+
+    !Blimey!
+        Now, we check if the REVERSED user input is the same as the correct password!
+        Swab userInput --> should become "backwards" if typed correctly
+        Cog ![ Swab userInput ]! correctPass --> should return true (Aye!)
+    Scallywag!
+    Avast Loot Cog ![ Swab userInput ]! correctPass
+
+    !Blimey! Now that we know they have the right password, we need to check if they know where our treasure is!
+    Scallywag!
+    Avast Booty ~~Where is the treasure located?~~
+    Restash Booty userInput Savvy?
+    !Blimey!
+        We know it's under the tree, and the location is larger than "Port Royale"
+    Scallywag!
+    Avast Loot Chantey ![ Spyglass userInput ~~tree~~ ]! ![ SmallerCog ~~Port Royale~~ userInput ]!
+
+    !Blimey! But is their name lucky? We need to know! x marks the lucky spot! Scallywag!
+    Avast Booty ~~What is your first name?~~
+    Stash Booty firstName Savvy?
+    Avast Booty ~~What is your last name?~~
+    Stash Booty lastName Savvy?
+    Stash Booty fullName Ahoy firstName lastName
+    Avast Booty fullName
+    Avast Loot Spyglass fullName ~~X~~
+
+    !Blimey! Let's sail the seven seas with lots of tildes
+             by putting dots in the string delimiters.  Scallywag!
+    Avast Booty ~.~~~~~~~~~~~~~~~~~~~~~.~
