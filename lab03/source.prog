@@ -1,0 +1,8 @@
+~ Prints a string literal, then reads a string and prints it,
+~ then concatenates a literal to another input and prints that,
+~ then reverses a string literal and prints it
+/str1/ p i p /OOO / i ~Check out this awesome in-line comment~ ss p /CHANGE_STRING/ r p
+
+~ The spacing is up to the programmer.
+/hot//dog/rissssp
+

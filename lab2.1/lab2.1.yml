@@ -1,0 +1,119 @@
+# SI413 Lab 2.1: Spec for StringBoolVar Language
+
+your_name: Tate Murphy
+
+your_alpha: 264542
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# describe any collaboration or help you got from classmates
+collaboration: |
+    NONE
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+#### TASK 1 ####
+
+language_name: Bocephus
+
+
+#### TASK 2 ####
+
+example_program: |
+    assign String name input()
+    assign String sentence input()
+    assign bool factCheck cierto
+    print String concat(name sentence)
+    print bool OR(factCheck falso)
+    print String(reverse(name))
+    print contains([want] sentence)
+    assign String name2 input()
+    print lessThan(name2 name)
+
+example_input_1: |
+    Mia
+    didn't want to check this = 
+    Addy
+example_output_1: |
+    Miadidn't want to check this = ciertoaiMciertocierto
+    
+example_input_2: |
+    Jake
+    ate his tacos = 
+    Tate
+example_output_2: |
+    Jakeate his tacos = ciertoekaJfalsofalso
+
+
+#### TASK 3 ####
+
+# there are just two example tokens below; you should remove or modify them!!
+tokens: |
+    Token name    Regex
+    ----------    -----
+    ASSIGN        assign
+    PRINT         print
+    TYPESTR       String
+    TYPEBOOL      bool
+    CONCAT        concat\(
+    REV           reverse\(
+    IN            input\(
+    CON           contains\(
+    LT            lessThan\(
+    AND           and\(
+    OR            or\(
+    NOT           not\(          
+    CLOSEX        \)
+    BOOl          cierto|falso
+    STR           \[(?:\\.|[^\]\\])*\]
+    VAR           [a-zA-Z0-9]\*$
+    ignore        \~[.]\~
+    ignore        [ \t\n]
+    #### TASK 4 ####
+
+# remove or replace the example production rule with your own!
+grammar: |
+    program -> statement program | ϵ
+    statement -> ASSIGN TYPESTRING VAR IN | ASSIGN TYPESTRING VAR STR | ASSIGN TYPEBOOL VAR BOOl | PRINT TYPESTR strEx | PRINT TYPEBOOL boolEx 
+    strEx -> IN strEx CLOSEX | REV strEx CLOSEX | CONCAT strList CLOSEX | STR
+    strList -> strEx strList | ϵ
+    boolEx -> AND boolEx CLOSEX | OR boolEx CLOSEX | NOT boolEX CLOSEX | CON strEx strEx CLOSEX | LT strEx strEx CLOSEX | BOOL
+
+#### TASK 5 ####
+
+semantics: |
+    Program- A Series of statements chained together.
+    Statement- A standalone series of expressions.
+    Assign- A statement that gives a variable a name and value. This variable can be referenced later in the program.
+    Print-  Outputs the string or bool to stdout.
+    String Literal- A series of zero or more characters enclosed within square brackets.
+    String Expression- A series of operations that evaluates to a string literal. 
+    Concatenation- An operations that assembles two or more concatenation expressions into a single string literal. If less than two strings are given, it returns the string.
+    Input- An operation that takes input from stdin and returns a string literal.
+    Reverse- An operations that reverses the order of the string.
+    Contains- An operation that evaluates whether the first string is a 
+    substring of the second string and returns a bool.
+    Less Than- An operation that evaluates whether the first string comes 
+    before the second in lexicographic order, returning a bool.
+    Bool Expression- A series of operations that evaluates to a bool.
+    And- An operator that performs the logical and of the two bool expressions.
+    Or- An operator that performs the logical or of the two bool expressions.
+    Not- An operator that performs the logical not of the given bool expression.
+    
+#### TASK 6 ####
+
+reviewer_for: Mia Kezal
+
+reviewed_by: Mia Kezal
+
+review_passed: Y
+
+reviewer_comments: |
+
+    Review 1
+    Looks good! Make sure to finish your example program and output and it will be great.
+
+    Review 2
+    Looks good! Grammar and tokens make sense. Good job!
