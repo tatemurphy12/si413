@@ -163,7 +163,7 @@ public class Compiler {
         public String visitStringContain(ParseRules.StringContainContext ctx) {
 			String s1 = strvisitor.visit(ctx.str_expr(0));
 			String s2 = strvisitor.visit(ctx.str_expr(1));
-			dest.println("%conRes" + Integer.toString(numBools) + " = call i32 @string_contains(" + s1 + ", " + s2 + ")");
+			dest.println("%conRes" + Integer.toString(numBools) + " = call i32 @string_contains(i8* noundef " + s1 + ", i8* noundef " + s2 + ")");
 			dest.println("%boolPtr" + Integer.toString(numBools) + "  = alloca i1, align 1");
 			dest.println("%boolPtr" + Integer.toString(numBools) + "LD = icmp ne i32 %conRes" + Integer.toString(numBools) + ", 0");
 			dest.println("store i1 %boolPtr" + Integer.toString(numBools) + "LD, ptr %boolPtr" + Integer.toString(numBools) + ", align 1");
@@ -176,7 +176,7 @@ public class Compiler {
 			String op = ctx.STR_CMP().getText();
 			String s1 = strvisitor.visit(ctx.str_expr(0));
 			String s2 = strvisitor.visit(ctx.str_expr(1));
-			dest.println("%comRes" + Integer.toString(numBools) + " = call i32 @string_compare(" + s1 + ", " + s2 + ")");
+			dest.println("%comRes" + Integer.toString(numBools) + " = call i32 @string_compare(i8* noundef " + s1 + ", i8* noundef " + s2 + ")");
 			numBools++;
 			dest.println("%boolPtr" + Integer.toString(numBools) + " = alloca i1, align 1");
 			if (op.equals("Cog"))
@@ -197,7 +197,7 @@ public class Compiler {
 			else
             	val = 0;
 			dest.println("%boolPtr" + Integer.toString(numBools) + " = alloca i1, align 1");
-			dest.println("store i1 1, ptr %boolPtr" + Integer.toString(numBools) + ", align 1");
+			dest.println("store i1 " + val + ", ptr %boolPtr" + Integer.toString(numBools) + ", align 1");
 			numBools++;
 			return "%boolPtr"+Integer.toString(numBools-1);
         }
@@ -237,7 +237,7 @@ public class Compiler {
                 dest.println(line);
             }
         }
-
+		//dest.println("declare i32 @puts(i8*)");
         dest.println("define i32 @main() {");
 
         // this calls all of your visit methods to walk the parse tree

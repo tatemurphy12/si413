@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 char* input(char* buffer, int size)
 {
@@ -68,4 +69,12 @@ int string_contains(char* str1, char* str2)
 		return 1;
 	else
 		return 0;
+}
+
+void print_aye_or_nay(bool *bool_ptr) {
+    bool bool_val = *bool_ptr;
+    if (bool_val)
+        puts("Aye");
+    else
+        puts("Nay");
 }
