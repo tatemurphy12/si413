@@ -14,8 +14,13 @@ stmt
   | ASSIGN BOOL_TYPE ID bool_expr #AssignBoolStmt
   | PRINT STR_TYPE str_expr #PrintStrStmt
   | PRINT BOOL_TYPE bool_expr #PrintBoolStmt
-  | WHILE LP bool_expr RP stmt #WhileLoopStmt
-  | IF LP bool_expr RP stmt stmt #CondStmt
+  | WHILE bool_expr LP stmtList RP #WhileLoopStmt
+  | IF bool_expr LP stmtList RP LP stmtList RP #CondStmt
+  ;
+
+stmtList
+  : stmt stmtList #StatementList
+  |               #EmptyStmt
   ;
 
 str_expr

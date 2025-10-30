@@ -56,12 +56,12 @@ public interface Stmt {
     record PrintBool(Expr<Boolean> child) implements Stmt {
         @Override
         public void exec(Interpreter interp) {
-            if (child.eval(interp)) System.out.println("Aye");
-            else System.out.println("Nay");
+            if (child.eval(interp)) System.out.println("True");
+            else System.out.println("False");
         }
     }
 
-    record IfElse(Expr<Boolean> condition, Stmt ifBody, Stmt elseBody) implements Stmt {
+    record IfElse(Expr<Boolean> condition, Stmt.Block ifBody, Stmt.Block elseBody) implements Stmt {
         @Override
         public void exec(Interpreter interp) {
             if (condition.eval(interp)) {
@@ -73,7 +73,7 @@ public interface Stmt {
         }
     }
 
-    record While(Expr<Boolean> condition, Stmt body) implements Stmt {
+    record While(Expr<Boolean> condition, Stmt.Block body) implements Stmt {
         @Override
         public void exec(Interpreter interp) {
             while (condition.eval(interp)) {

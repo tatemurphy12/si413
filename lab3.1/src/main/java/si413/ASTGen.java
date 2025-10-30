@@ -33,8 +33,25 @@ public class ASTGen {
         public Stmt.Block visitEmptyProg(ParseRules.EmptyProgContext ctx) {
             return new Stmt.Block(List.of());
         }
-    }
 
+        @Override
+        public Stmt.Block visitStatementList(ParseRules.StatementListContext ctx)
+        {
+            Stmt s = stmtVis.visit(ctx.stmt());
+            Stmt.Block rest = visit(ctx.stmtList());
+            List<Stmt> children = new ArrayList<>();
+            children.add(s);
+            children.addAll(rest.children());
+            return new Stmt.Block(children);
+        }
+
+        @Override
+        public Stmt.Block visitEmptyStmt(ParseRules.EmptyStmtContext ctx)
+        {
+            return new Stmt.Block(List.of());
+        }
+
+    }
 
     private class StmtVisitor extends Visitor<Stmt> {
         @Override
@@ -66,15 +83,15 @@ public class ASTGen {
 		public Stmt visitCondStmt(ParseRules.CondStmtContext ctx)
 		{
 			Expr<Boolean> cond = boolExprVis.visit(ctx.bool_expr());
-			Stmt ifBody = stmtVis.visit(ctx.stmt(0));
-			Stmt elseBody = stmtVis.visit(ctx.stmt(1));
+			Stmt.Block ifBody = progVis.visit(ctx.stmtList(0));
+			Stmt.Block elseBody = progVis.visit(ctx.stmtList(1));
 			return new Stmt.IfElse(cond, ifBody, elseBody);
 		}
 		@Override
 		public Stmt visitWhileLoopStmt(ParseRules.WhileLoopStmtContext ctx)
 		{
 			Expr<Boolean> cond = boolExprVis.visit(ctx.bool_expr());
-			Stmt whileBody = stmtVis.visit(ctx.stmt());
+			Stmt.Block whileBody = progVis.visit(ctx.stmtList());
 			return new Stmt.While(cond, whileBody);
 		}
 	}

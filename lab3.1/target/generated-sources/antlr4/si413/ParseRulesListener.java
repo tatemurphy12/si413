@@ -104,6 +104,30 @@ public interface ParseRulesListener extends ParseTreeListener {
 	 */
 	void exitCondStmt(ParseRules.CondStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code StatementList}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementList(ParseRules.StatementListContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StatementList}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementList(ParseRules.StatementListContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code EmptyStmt}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyStmt(ParseRules.EmptyStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EmptyStmt}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyStmt(ParseRules.EmptyStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code StringPar}
 	 * labeled alternative in {@link ParseRules#str_expr}.
 	 * @param ctx the parse tree

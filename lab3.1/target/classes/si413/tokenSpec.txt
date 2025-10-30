@@ -18,4 +18,3 @@ BOOL_TYPE:    Loot
 ID:           [a-zA-Z][a-zA-Z0-9]*
 ignore:       [ \t\r\n]
 ignore:       !Blimey![\s\S]*?Scallywag!
-

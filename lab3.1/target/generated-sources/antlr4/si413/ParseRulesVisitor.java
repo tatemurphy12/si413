@@ -67,6 +67,20 @@ public interface ParseRulesVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondStmt(ParseRules.CondStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StatementList}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatementList(ParseRules.StatementListContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code EmptyStmt}
+	 * labeled alternative in {@link ParseRules#stmtList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyStmt(ParseRules.EmptyStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringPar}
 	 * labeled alternative in {@link ParseRules#str_expr}.
 	 * @param ctx the parse tree

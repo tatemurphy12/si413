@@ -8,42 +8,95 @@ used_ai: N # remember to turn in an aichat.md file as well
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
-    NONE
+    Added functionality for nested statements within conditionals and loops. Also wrote the exmaple program and the dance program.
 
 # describe any collaboration or help you got from classmates
 collaboration: |
     NONE
 
 # come up with an original name for your new langauge
-language_name: Blackbeard
+language_name: Patrick
 
 # explain a little what inspired your language and why it's cool
 language_explanation: |
-    I took LCDR Norine's language from Unit 2 and added while loops and conditionals. 
+    I took LCDR Norine's language from Unit 2 and added while loops, conditionals, and the ability to nest statements. 
 
 # this is the example program that you make up
 example_program: |
     !Blimey! The following program demostrates the functionality of if and while statements Scallywag!
 
-example_input_1: |
-    BLAH BLAH
+    Stash Booty timer ~~~~
 
-example_output_1: |
-    BLAH BLAH
+    Whirlpool Scuttle Spyglass timer ~~......~~ ![Avast Booty ~~Hey Squidward~~ Avast Booty ~~Go away~~ Restash Booty timer Ahoy timer ~~.~~ ]!
+
+    Avast Booty ~~WHAAAAT~~
+
+    Stash Booty word Savvy?
+
+    Rum Spyglass word ~~wumbo~~ ![Avast Booty ~~You gotta turn it to W for Wumbo~~ Avast Booty ~~You cannot be serious Patrick~~]! ![ Avast Booty ~~No Spongebob, the problem is you have it set at M for mini~~ Avast Booty ~~Uhhhhhhhhhhhhhhhhhhhhhhhhh~~ ]!
+    
+example_input_1: |
+    mini?
+
+example_output_1: |    
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    WHAAAAT
+    No Spongebob, the problem is you have it set at M for mini
+    Uhhhhhhhhhhhhhhhhhhhhhhhhh
 
 example_input_2: |
-    BLAH BLAH
+    wumbo?
 
 example_output_2: |
-    BLAH BLAH
-
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    Hey Squidward
+    Go away
+    WHAAAAT
+    You gotta turn it to W for Wumbo
+    You cannot be serious Patrick
 
 # your implementation of the "dance" program in your language
 dance_program: |
-    BLAH BLAH
-    BLAH BLAH
+    !Blimey! Dancing Queen Program Scallywag!
 
+    Avast Booty ~~enter two dances moves~~
+
+    Stash Booty x Ahoy Ahoy Savvy? ~~m~~ Savvy?
+
+    Avast Booty Ahoy ~~Let's do the ~~x
+
+    Stash Loot y Spyglass x ~~mb~~
+
+    Rum SmallerCog x ~~mambo~~ ![Avast Booty Swab x Restash Loot y Nay]! ![]!
+
+    Avast Loot y
+
+    Avast Loot Chantey ![ Spyglass x ~~a~~ ]! ![ Scuttle y ]!
+
+    Stash Booty timer ~~~~
+
+    Whirlpool Scuttle Spyglass timer ~~...~~ ![Avast Booty ~~cha~~ Restash Booty timer Ahoy timer ~~.~~ ]!
 
 # something else your instructor should know?
 any_other_comments_for_me: |
-    Have written out all the logic for the AST but have not created the dance program or other programs to test the interpreter. Unfortuneately I ran out of time and had to switch tasks.
+    Did not use AI for this lab. I did look up documentation for the Override feature in Java because I was not properly naming my methods. Other than that, I used the course notes, lab description, and information from class to complete the Interpreter.
