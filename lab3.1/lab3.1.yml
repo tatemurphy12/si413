@@ -4,7 +4,7 @@ your_name: Tate Murphy
 
 your_alpha: 264542
 
-used_ai: Y # remember to turn in an aichat.md file as well
+used_ai: N # remember to turn in an aichat.md file as well
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
@@ -46,4 +46,4 @@ dance_program: |
 
 # something else your instructor should know?
 any_other_comments_for_me: |
-    NONE
+    Have written out all the logic for the AST but have not created the dance program or other programs to test the interpreter. Unfortuneately I ran out of time and had to switch tasks.
