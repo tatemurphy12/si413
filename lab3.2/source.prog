@@ -1,0 +1,17 @@
+
+            !Blimey! Get the secret input from the user. They should type in "sdrawkcab" Scallywag!
+            Avast Booty ~~Enter the password or walk the plank!~~
+
+            !Blimey!
+                Now, we check if the REVERSED user input is the same as the correct password!
+                Swab Savvy? --> should become "backwards" if typed correctly
+                Cog ![ Swab userInput ]! ~~correctPass~~ --> should return true (Aye!)
+            Scallywag!
+
+            !Blimey! Now that we know they have the right password, we need to check if they know where our treasure is!
+            Scallywag!
+            Avast Booty ~~Where is the treasure located?~~
+            !Blimey!
+                We know it's under the tree, and the location is larger than "Port Royale"
+            Scallywag!
+            Avast Booty ~.~~~~~~~~~~~~~~~~~~~~~.~

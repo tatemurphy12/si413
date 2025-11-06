@@ -1,0 +1,12 @@
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Expr.java
+/home/vm/si413/si413/lab3.2/target/generated-sources/antlr4/si413/ParseRulesVisitor.java
+/home/vm/si413/si413/lab3.2/target/generated-sources/antlr4/si413/ParseRulesBaseVisitor.java
+/home/vm/si413/si413/lab3.2/target/generated-sources/antlr4/si413/ParseRules.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Interpreter.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Compiler.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/ASTGen.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Errors.java
+/home/vm/si413/si413/lab3.2/target/generated-sources/antlr4/si413/ParseRulesBaseListener.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Stmt.java
+/home/vm/si413/si413/lab3.2/target/generated-sources/antlr4/si413/ParseRulesListener.java
+/home/vm/si413/si413/lab3.2/src/main/java/si413/Tokenizer.java
