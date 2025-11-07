@@ -21,6 +21,18 @@ public class Compiler {
     private PrintWriter dest;
     private int nextRegNum = 1;
     private List<String> literals = new ArrayList<>();
+    private int condNum = 0;
+    private List<String> vars = new ArrayList<>();
+
+    public void addVar(String s)
+    {
+	vars.add(s);
+    }
+
+    public boolean isVar(String s)
+    {
+	    return vars.contains(s);
+    }
 
     /** Returns the open writer to the destination .ll file. */
     public PrintWriter dest() { return dest; }
@@ -38,6 +50,16 @@ public class Compiler {
     public String addStringLit(String str) {
         literals.add(str);
         return String.format("@lit%d", literals.size());
+    }
+
+    public int getNum()
+    {
+	    return condNum;
+    }
+
+    public void incrementNum()
+    {
+	    condNum++;
     }
 
     /** Constructor for the Compiler object given the output ll file. */

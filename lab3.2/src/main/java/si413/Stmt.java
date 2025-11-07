@@ -54,9 +54,10 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
-			String s = child.compile(comp);
-			String lit = comp.addStringLit(s);
-			comp.dest().format("   %%s = alloca ptr", name);	//allocate a pointer
+	    	String s = child.compile(comp);
+            comp.dest().format("   %%%sptr = alloca i8*\n", name);
+            comp.dest().format("   store i8* %s, i8** %%%sptr\n", s, name);
+			comp.dest().format("   %%%s = load i8*, i8** %%%sptr", name, name);
 
         }
     }
@@ -70,6 +71,9 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
+            comp.dest().format("   %%%s = alloca i1*\n", name);
+	    	String val = child.compile(comp);
+	    	comp.dest().format("   store i1 %s, i1* %%%s\n", val, name);
         }
     }
 
@@ -100,7 +104,7 @@ public interface Stmt {
         }
     }
 
-    record IfElse(Expr<Boolean> condition, Stmt ifBody, Stmt elseBody) implements Stmt {
+    record IfElse(Expr<Boolean> condition, Stmt.Block ifBody, Stmt.Block elseBody) implements Stmt {
         @Override
         public void exec(Interpreter interp) {
             if (condition.eval(interp)) {
@@ -113,10 +117,21 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
+            String bool = condition.compile(comp);
+			int delin = comp.getNum();
+            comp.dest().format("   br i1 %s, label %%true_%d, label %%false_%d\n", bool, delin, delin );
+			comp.dest().format("true_%d:\n", delin);
+            ifBody.compile(comp);
+			comp.dest().format("   br label %%exit_%d\n", delin);
+			comp.dest().format("false_%d:\n", delin);
+			elseBody.compile(comp);
+			comp.dest().format("   br label %%exit_%d\n", delin);
+			comp.dest().format("exit_%d:\n", delin);
+			comp.incrementNum();
         }
     }
 
-    record While(Expr<Boolean> condition, Stmt body) implements Stmt {
+    record While(Expr<Boolean> condition, Stmt.Block body) implements Stmt {
         @Override
         public void exec(Interpreter interp) {
             while (condition.eval(interp)) {
@@ -125,7 +140,18 @@ public interface Stmt {
         }
 
         @Override
-        public void compile(Compiler comp) {
+        public void compile(Compiler comp) 
+		{
+			int delin = comp.getNum();
+			comp.dest().format("   br label %%header_%d\n", delin);
+			comp.dest().format("header_%d:\n", delin);
+			String bool = condition.compile(comp);
+			comp.dest().format("   br i1 %s, label %%body_%d, label %%exit_%d\n", bool, delin, delin);
+			comp.dest().format("body_%d:\n", delin);
+            body.compile(comp);
+			comp.dest().format("   br label %%header_%d\n", delin);
+			comp.dest().format("exit_%d:\n", delin);
+			comp.incrementNum();
         }
     }
 }

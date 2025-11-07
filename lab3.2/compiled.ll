@@ -217,11 +217,46 @@ attributes #9 = { noreturn nounwind }
 !6 = distinct !{!6, !7}
 !7 = !{!"llvm.loop.mustprogress"}
 define i32 @main() {
-  call i32 @puts(ptr @lit1)
-  call i32 @puts(ptr @lit2)
+   %timer = alloca i8*
+   store i8* @lit1, i8** %timer
+   br label %header_0
+header_0:
+  %reg1 = call i1 @string_contains(ptr %timer, ptr @lit2)
+  %reg2 = xor i1 %reg1, true
+   br i1 %reg2, label %body_0, label %exit_0
+body_0:
   call i32 @puts(ptr @lit3)
-  ret i32 0
+  call i32 @puts(ptr @lit4)
+  %reg3 = call ptr @concat_strings(ptr %timer, ptr @lit5)
+   ; %timer = alloca i8*
+   store i8* %reg3, i8** %timer
+   br label %header_0
+exit_0:
+  call i32 @puts(ptr @lit6)
+  %reg4 = call ptr @read_line()
+   %word = alloca i8*
+   store i8* %reg4, i8** %word
+  %reg5 = call i1 @string_contains(ptr %word, ptr @lit7)
+   br i1 %reg5, label %true_1, label %false_1
+true_1:
+  call i32 @puts(ptr @lit8)
+  call i32 @puts(ptr @lit9)
+  br label %exit_1
+false_1:
+  call i32 @puts(ptr @lit10)
+  call i32 @puts(ptr @lit11)
+  br label %exit_1
+exit_1:
+   ret i32 0
 }
-@lit1 = constant [38 x i8] c"Enter the password or walk the plank!\00"
-@lit2 = constant [31 x i8] c"Where is the treasure located?\00"
-@lit3 = constant [20 x i8] c"~~~~~~~~~~~~~~~~~~~\00"
+@lit1 = constant [1 x i8] c"\00"
+@lit2 = constant [7 x i8] c"......\00"
+@lit3 = constant [14 x i8] c"Hey Squidward\00"
+@lit4 = constant [8 x i8] c"Go away\00"
+@lit5 = constant [2 x i8] c".\00"
+@lit6 = constant [8 x i8] c"WHAAAAT\00"
+@lit7 = constant [6 x i8] c"wumbo\00"
+@lit8 = constant [33 x i8] c"You gotta turn it to W for Wumbo\00"
+@lit9 = constant [30 x i8] c"You cannot be serious Patrick\00"
+@lit10 = constant [59 x i8] c"No Spongebob, the problem is you have it set at M for mini\00"
+@lit11 = constant [27 x i8] c"Uhhhhhhhhhhhhhhhhhhhhhhhhh\00"

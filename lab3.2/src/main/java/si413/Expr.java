@@ -32,13 +32,13 @@ public interface Expr<T> {
         public String eval(Interpreter interp) {
             String val = interp.getStringVars().get(name);
             if (val == null)
-                return Errors.error(String.format("undefined string variable %s", name));
+                return Errors.error(String.format("undefined string variable %s\n", name));
             else return val;
         }
 
         @Override
         public String compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            return "%" + name;
         }
     }
 
@@ -112,16 +112,15 @@ public interface Expr<T> {
         public Boolean eval(Interpreter interp) {
             Boolean val = interp.getBoolVars().get(name);
             if (val == null)
-                return Errors.error(String.format("undefined bool variable %s", name));
+                return Errors.error(String.format("undefined bool variable %s\n", name));
             else return val;
         }
 
         @Override
         public String compile(Compiler comp) {
-				comp.dest().format("   %%s = alloca i1", name);
-				String val = child.compile(comp);
-				comp.dest().format("   store i1 %%s, i1* %%s", val, name);
-				return "%" + name;
+            String loaded = comp.nextRegister();
+            comp.dest().format("   %s = load i1, i1* %%s\n", loaded, name);
+	    return loaded;
         }
     }
 
